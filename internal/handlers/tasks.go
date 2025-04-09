@@ -4,9 +4,31 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"listaPro/internal/models"
+	"listaPro/internal/repositories"
 	"net/http"
 	"strconv"
 )
+
+// GetTasksByList - Obter todas as tarefas de uma lista específica
+func GetTasksByList(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		listID, err := strconv.ParseUint(c.Param("id"), 10, 32)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "ID inválido"})
+			return
+		}
+
+		repo := repositories.NewTaskRepository(db)
+
+		tasks, err := repo.GetAllByList(uint(listID))
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar tarefas"})
+			return
+		}
+
+		c.JSON(http.StatusOK, tasks)
+	}
+}
 
 // CreateTask (POST /api/lists/:id/tasks)
 func CreateTask(db *gorm.DB) gin.HandlerFunc {
@@ -43,7 +65,7 @@ func CreateTask(db *gorm.DB) gin.HandlerFunc {
 }
 
 // UpdateTask (PUT /api/tasks/:id)
-func UpdateTaks(db *gorm.DB) gin.HandlerFunc {
+func UpdateTask(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		taskID, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
@@ -81,7 +103,7 @@ func UpdateTaks(db *gorm.DB) gin.HandlerFunc {
 }
 
 // DeleteTask (DELETE /api/tasks/:id)
-func DeleteTaks(db *gorm.DB) gin.HandlerFunc {
+func DeleteTask(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		taskID, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
