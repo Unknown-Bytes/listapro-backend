@@ -30,6 +30,10 @@ func ConnectDB() *gorm.DB {
 	return db
 }
 
-func Migrate() {
-	db.AutoMigrate(&models.TaskList{}, &models.Task{})
+func Migrate(db *gorm.DB) {
+	// Executar migrações
+	err := db.AutoMigrate(&models.TaskList{}, &models.Task{})
+	if err != nil {
+		panic("Falha ao migrar tabelas: " + err.Error())
+	}
 }
