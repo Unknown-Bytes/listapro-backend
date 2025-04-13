@@ -4,11 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"listaPro/internal/models"
+	"listaPro/internal/repositories"
 	"net/http"
 	"strconv"
 )
 
-func GetAllLists(db *gorm.DB) gin.HandlerFunc {
+func GetAllLists(db *repositories.ListRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var lists []models.TaskList
 		if result := db.Preload("Tasks").Find(&lists); result.Error != nil {
@@ -20,7 +21,7 @@ func GetAllLists(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func CreateList(db *gorm.DB) gin.HandlerFunc {
+func CreateList(db *handlers.MockListRepo) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var newList models.TaskList
 		if err := c.ShouldBindJSON(&newList); err != nil {

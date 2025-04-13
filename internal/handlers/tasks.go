@@ -31,7 +31,7 @@ func GetTasksByList(db *gorm.DB) gin.HandlerFunc {
 }
 
 // CreateTask (POST /api/lists/:id/tasks)
-func CreateTask(db *gorm.DB) gin.HandlerFunc {
+func CreateTask(db *handlers.MockTaskRepo) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		listID, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
