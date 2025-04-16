@@ -10,6 +10,8 @@ RUN go mod download
 # Copiar o código fonte
 COPY . .
 
+RUN go mod tidy
+
 # Compilar a aplicação
 RUN CGO_ENABLED=0 GOOS=linux go build -o backend main.go
 
