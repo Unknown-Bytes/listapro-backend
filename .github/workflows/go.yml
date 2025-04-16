@@ -37,7 +37,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build da imagem Docker
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/listapro-backend:latest .
+        run: docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/listapro-backend:latest .
 
       - name: Push da imagem Docker
         run: docker push ${{ secrets.DOCKER_USERNAME }}/listapro-backend:latest
