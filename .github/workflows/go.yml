@@ -45,7 +45,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Fazer login no Docker Hub
         uses: docker/login-action@v2
@@ -54,7 +54,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build da imagem Docker
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/listapro-backend:latest -f docker/Dockerfile .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/listapro-backend:latest .
 
       - name: Push da imagem Docker
         run: docker push ${{ secrets.DOCKER_USERNAME }}/listapro-backend:latest
