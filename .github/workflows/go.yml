@@ -60,7 +60,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Atualizar imagem Docker
-        run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/listapro-backend:latest
+        run: sudo docker pull brunovn7/listapro-backend:latest
 
       - name: Parar e remover contêiner atual
         run: |
