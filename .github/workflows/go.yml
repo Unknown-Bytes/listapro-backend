@@ -35,7 +35,7 @@ jobs:
       - name: Login no Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: brunovn7
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Setup do Buildx
@@ -56,7 +56,7 @@ jobs:
       - name: Login no Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: brunovn7
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Atualizar imagem Docker
@@ -78,7 +78,7 @@ jobs:
             -e DB_NAME=${{ secrets.DB_NAME }} \
             -e DB_PORT=${{ secrets.DB_PORT }} \
             -e DB_SSLMODE=${{ secrets.DB_SSLMODE }} \
-            ${{ secrets.DOCKER_USERNAME }}/listapro-backend:latest
+            brunovn7/listapro-backend:latest
 
       - name: Verificar logs
         run: sudo docker logs listapro-backend
