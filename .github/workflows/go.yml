@@ -52,6 +52,7 @@ jobs:
 
       - name: Build da Imagem Docker
         run: docker buildx build --load -t ${{ secrets.DOCKER_USERNAME }}/listapro-backend:latest .
+        working-directory: ./  
 
       - name: Push da Imagem Docker
         run: docker push ${{ secrets.DOCKER_USERNAME }}/listapro-backend:latest
