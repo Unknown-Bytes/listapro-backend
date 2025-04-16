@@ -46,7 +46,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/listapro-backend:latest
+          tags: brunovn7/listapro-backend:latest
 
   deploy:
     needs: docker-build-and-push
