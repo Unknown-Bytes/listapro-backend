@@ -1,10 +1,10 @@
-name: DEV-CI/CD
+name: RELEASE-CI/CD
 
 on:
   push:
-    branches: [dev]
+    branches: [release]
   pull_request:
-    branches: [dev]
+    branches: [release]
 
 jobs:
   test:
@@ -26,7 +26,7 @@ jobs:
 
   docker-build-and-push-dev:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/release'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
