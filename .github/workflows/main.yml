@@ -1,4 +1,4 @@
-name: Backend CI/CD com Docker
+name: PROD-CI/CD
 
 on:
   push:
