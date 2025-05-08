@@ -1,10 +1,10 @@
-name: DEV-CI/CD
+name: PROD-CI/CD
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
   pull_request:
-    branches: [dev]
+    branches: [main]
 
 jobs:
   test:
@@ -26,7 +26,7 @@ jobs:
 
   docker-build-and-push-dev:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
@@ -51,5 +51,5 @@ jobs:
           context: .
           push: true
           tags: |
-            brunovn7/listapro-backend:dev
-            brunovn7/listapro-backend:dev-${{ steps.vars.outputs.short_sha }}
+            brunovn7/listapro-backend:latest
+            brunovn7/listapro-backend:latest-${{ steps.vars.outputs.short_sha }}
