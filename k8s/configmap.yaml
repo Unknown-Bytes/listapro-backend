@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: listapro-config
+  labels:
+    app: listapro
+data:
+  DB_HOST: "postgres"
+  DB_NAME: "listapro"
+  DB_USER: "listapro"
+  DB_PASSWORD: "@ArlistaPr02025"
+  DB_PORT: "5432"
+  DB_SSLMODE: "disable"
