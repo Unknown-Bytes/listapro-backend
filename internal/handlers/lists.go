@@ -66,7 +66,7 @@ func UpdateList(db *gorm.DB) gin.HandlerFunc {
 		c.JSON(http.StatusOK, list)
 	}
 }
-
+//Teste!
 func DeleteList(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
