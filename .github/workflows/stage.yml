@@ -1,4 +1,4 @@
-name: RELEASE-CI/CD
+name: PROD-CI/CD
 
 on:
   push:
@@ -12,18 +12,18 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v3
-
+        
       - name: Configurar Go
         uses: actions/setup-go@v4
         with:
           go-version: '1.23'
-
+          
       - name: Instalar dependências
         run: go mod download
-
+        
       - name: Executar testes
         run: go test -v ./...
-
+        
   docker-build-and-push-dev:
     needs: test
     if: github.event_name == 'push' && github.ref == 'refs/heads/release'
@@ -31,20 +31,20 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v3
-
+        
       - name: Login no Docker Hub
         uses: docker/login-action@v2
         with:
           username: brunovn7
           password: ${{ secrets.DOCKER_PASSWORD }}
-
+          
       - name: Setup do Buildx
         uses: docker/setup-buildx-action@v2
-
+        
       - name: Definir hash curto do commit
         id: vars
         run: echo "short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_OUTPUT
-
+        
       - name: Build e Push da imagem para dev
         uses: docker/build-push-action@v5
         with:
@@ -53,3 +53,22 @@ jobs:
           tags: |
             brunovn7/listapro-backend:dev
             brunovn7/listapro-backend:dev-${{ steps.vars.outputs.short_sha }}
+          build-args: |
+            platforms=linux/amd64,linux/arm64
+            
+      - name: Instalar doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          
+      - name: Configurar kubeconfig
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME_PROD }}
+        
+      - name: Atualizar imagem do backend no namespace 'production'
+        run: |
+          kubectl set image deployment/listapro-backend \
+            listapro-backend=brunovn7/listapro-backend:dev-${{ steps.vars.outputs.short_sha }} \
+            -n production
+            
+      - name: Verificar rollout do backend
+        run: kubectl rollout status deployment/listapro-backend -n production
