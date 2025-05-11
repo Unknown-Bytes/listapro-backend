@@ -62,13 +62,13 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
           
       - name: Configurar kubeconfig
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME_PROD }}
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME }}
         
       - name: Atualizar imagem do backend no namespace 'production'
         run: |
           kubectl set image deployment/listapro-backend \
             listapro-backend=brunovn7/listapro-backend:dev-${{ steps.vars.outputs.short_sha }} \
-            -n production
+            -n stage
             
       - name: Verificar rollout do backend
-        run: kubectl rollout status deployment/listapro-backend -n production
+        run: kubectl rollout status deployment/listapro-backend -n stage
